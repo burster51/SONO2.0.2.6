@@ -42,7 +42,7 @@ static const int INIT_PROTO_VERSION = 20024;
 static const int MIN_PEER_PROTO_VERSION = 20024;
 
 // Don't forget to change proto in DARKSEND.h as well!!
-static const int MIN_MN_PROTO_VERSION = 20026; //Dont forget -> we set a manual kickout in masternode.cpp
+static const int MIN_MN_PROTO_VERSION = 20024; //Dont forget -> we set a manual kickout in masternode.cpp
 
 
 // nTime field added to CAddress, starting with this version;

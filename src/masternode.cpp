@@ -64,7 +64,7 @@ void ProcessMessageMasternode(CNode* pfrom, std::string& strCommand, CDataStream
         if(fIsInitialDownload) return;
 
         int masternodeversion = MIN_MN_PROTO_VERSION;
-        if (pindexBest->nHeight > PoSFixHeight)
+        if (pindexBest->nHeight > BlocktimeOneMinHeight)
            masternodeversion = KICK_BELOW_THIS_VERSION;
 
 
@@ -483,7 +483,7 @@ bool GetMasternodeRanks()
     vecMasternodeScores.clear();
 
     int masternodeversion = MIN_MN_PROTO_VERSION;
-    if (pindexBest->nHeight > PoSFixHeight)
+    if (pindexBest->nHeight > BlocktimeOneMinHeight)
        masternodeversion = KICK_BELOW_THIS_VERSION;
 
     BOOST_FOREACH(CMasterNode& mn, vecMasternodes) {
