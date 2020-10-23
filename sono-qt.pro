@@ -22,20 +22,20 @@ LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB
 LIBS += -lssl -lcrypto -ldb_cxx$$BDB_LIB_SUFFIX
 windows:LIBS += -lws2_32 -lole32 -loleaut32 -luuid -lgdi32
 LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX
-BOOST_INCLUDE_PATH=C:/deps/boost_1_57_0
-BOOST_LIB_PATH=C:/deps/boost_1_57_0/stage/lib
-BDB_INCLUDE_PATH=C:/deps/db-4.8.30.NC/build_unix
-BDB_LIB_PATH=C:/deps/db-4.8.30.NC/build_unix
-OPENSSL_INCLUDE_PATH=C:/deps/openssl-1.0.1m/include
-OPENSSL_LIB_PATH=C:/deps/openssl-1.0.1m
-MINIUPNPC_INCLUDE_PATH=C:/deps/
-MINIUPNPC_LIB_PATH=C:/deps/miniupnpc
-LIBPNG_INCLUDE_PATH=C:/deps/libpng-1.6.16
-LIBPNG_LIB_PATH=C:/deps/libpng-1.6.16/.libs
-QRENCODE_INCLUDE_PATH=C:/deps/qrencode-3.4.4
-QRENCODE_LIB_PATH=C:/deps/qrencode-3.4.4/.libs
-SECP256K1_LIB_PATH =/home/uzbek/sw/secp256k1/.libs
-SECP256K1_INCLUDE_PATH = /home/uzbek/sw/secp256k1/include
+#BOOST_INCLUDE_PATH=C:/deps/boost_1_57_0
+#BOOST_LIB_PATH=C:/deps/boost_1_57_0/stage/lib
+#BDB_INCLUDE_PATH=C:/deps/db-4.8.30.NC/build_unix
+#BDB_LIB_PATH=C:/deps/db-4.8.30.NC/build_unix
+#OPENSSL_INCLUDE_PATH=C:/deps/openssl-1.0.1m/include
+#OPENSSL_LIB_PATH=C:/deps/openssl-1.0.1m
+#MINIUPNPC_INCLUDE_PATH=C:/deps/
+#MINIUPNPC_LIB_PATH=C:/deps/miniupnpc
+#LIBPNG_INCLUDE_PATH=C:/deps/libpng-1.6.16
+#LIBPNG_LIB_PATH=C:/deps/libpng-1.6.16/.libs
+#QRENCODE_INCLUDE_PATH=C:/deps/qrencode-3.4.4
+#QRENCODE_LIB_PATH=C:/deps/qrencode-3.4.4/.libs
+#SECP256K1_LIB_PATH =/home/uzbek/sw/secp256k1/.libs
+#SECP256K1_INCLUDE_PATH = /home/uzbek/sw/secp256k1/include
 #GMP_INCLUDE_PATH=C:/deps/gmp-6.0.0
 #GMP_LIB_PATH=C:/deps/gmp-6.0.0/.libs
 }
@@ -166,7 +166,7 @@ contains(USE_LEVELDB, -) {
 } else {
 	message(Building with LevelDB transaction index)
 	count(USE_LEVELDB, 0) {
-        USE_LEVELDB=1
+        USE_LEVELDB=0
     }
 	
 	DEFINES += USE_LEVELDB
@@ -203,8 +203,11 @@ contains(USE_LEVELDB, -) {
 		isEmpty(QMAKE_RANLIB) {
 			QMAKE_RANLIB = $$replace(QMAKE_STRIP, strip, ranlib)
 		}
+		isEmpty(QMAKE_AR) {
+			QMAKE_AR = $$replace(QMAKE_STRIP, strip, ar)
+		}
 		LIBS += -lshlwapi
-		#genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=OS_WINDOWS_CROSSCOMPILE $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
+		genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX AR=$$QMAKE_AR TARGET_OS=OS_WINDOWS_CROSSCOMPILE $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
 	}
 	genleveldb.target = $$PWD/src/leveldb/libleveldb.a
 	genleveldb.depends = FORCE
@@ -550,7 +553,7 @@ OTHER_FILES += \
 # platform specific defaults, if not overridden on command line
 isEmpty(BOOST_LIB_SUFFIX) {
     macx:BOOST_LIB_SUFFIX = -mt
-    windows:BOOST_LIB_SUFFIX = -mgw48-mt-s-1_55
+    windows:BOOST_LIB_SUFFIX = -mt
 }
 
 isEmpty(BOOST_THREAD_LIB_SUFFIX) {
